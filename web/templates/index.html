@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Gesture Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Spotify Gesture Control</h1>
+        </header>
+        
+        <div class="main-content">
+            <div class="video-container">
+                <h2>Gesture Recognition</h2>
+                <img src="{{ url_for('video_feed') }}" alt="Video Feed">
+                <div class="gesture-info">
+                    <p>Current Gesture: <span id="current-gesture">No Gesture</span></p>
+                    <p>FPS: <span id="fps">0</span></p>
+                </div>
+            </div>
+            
+            <div class="track-info">
+                <h2>Current Track</h2>
+                <div id="track-container">
+                    <div id="no-track-message">No track currently playing</div>
+                    <div id="track-details" style="display: none;">
+                        <div class="album-cover">
+                            <img id="album-cover" src="" alt="Album Cover">
+                        </div>
+                        <div class="track-text">
+                            <p><strong>Track:</strong> <span id="track-name"></span></p>
+                            <p><strong>Artist:</strong> <span id="artist-name"></span></p>
+                            <p><strong>Album:</strong> <span id="album-name"></span></p>
+                            <p><strong>Status:</strong> <span id="play-status"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <h2>Manual Controls</h2>
+            <div class="control-buttons">
+                <button onclick="controlSpotify('previous')" class="control-btn">Previous</button>
+                <button id="play-pause-btn" onclick="controlSpotify('play')" class="control-btn">Play</button>
+                <button onclick="controlSpotify('next')" class="control-btn">Next</button>
+                <button onclick="controlSpotify('volume_down')" class="control-btn">Volume -</button>
+                <button onclick="controlSpotify('volume_up')" class="control-btn">Volume +</button>
+                <button onclick="exitApplication()" class="control-btn exit-btn">Exit</button>
+            </div>
+        </div>
+        
+        <div class="gesture-guide">
+            <h2>Gesture Guide</h2>
+            <table>
+                <tr>
+                    <th>Gesture</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>Peace Sign (Index + Middle fingers up)</td>
+                    <td>Play/Pause</td>
+                </tr>
+                <tr>
+                    <td>Thumb + Index up</td>
+                    <td>Next Track</td>
+                </tr>
+                <tr>
+                    <td>Thumb + Pinky up</td>
+                    <td>Previous Track</td>
+                </tr>
+                <tr>
+                    <td>All fingers except thumb up</td>
+                    <td>Volume Up</td>
+                </tr>
+                <tr>
+                    <td>Only thumb up</td>
+                    <td>Volume Down</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
