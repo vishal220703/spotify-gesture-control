@@ -1,7 +1,7 @@
 # Spotify Gesture Control
 
-![image](https://github.com/user-attachments/assets/d74c7aff-8beb-4dc7-93a6-3b611e36cd3d)
 ![wmremove-transformed](https://github.com/user-attachments/assets/078ca176-27c0-4c58-af2c-5d1197bceddd)
+![image](https://github.com/user-attachments/assets/d74c7aff-8beb-4dc7-93a6-3b611e36cd3d)
 
 
 ## Overview
