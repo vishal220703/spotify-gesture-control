@@ -29,7 +29,9 @@ class WebGestureController:
     def __init__(self):
         import logging
         logging.info(f"Initializing camera with index {CAMERA_INDEX}")
+        start_time = time.time()
         self.cap = cv2.VideoCapture(CAMERA_INDEX)
+        logging.info(f"Camera initialization took {time.time() - start_time:.2f} seconds")
         
         if not self.cap.isOpened():
             logging.error(f"Failed to open camera with index {CAMERA_INDEX}")
@@ -37,12 +39,19 @@ class WebGestureController:
             logging.info(f"Successfully opened camera with index {CAMERA_INDEX}")
         
         # Set camera properties for higher FPS
+        logging.info("Setting camera properties")
+        prop_start_time = time.time()
         self.cap.set(cv2.CAP_PROP_FPS, TARGET_FPS)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+        logging.info(f"Setting camera properties took {time.time() - prop_start_time:.2f} seconds")
         
+        logging.info("Initializing hand gesture detector")
+        detector_start_time = time.time()
         self.detector = HandGestureDetector()
+        logging.info(f"Detector initialization took {time.time() - detector_start_time:.2f} seconds")
+        
         self.prev_time = 0
         self.current_time = 0
         self.prev_gesture = None

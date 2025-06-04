@@ -4,12 +4,22 @@ import webbrowser
 import time
 from threading import Timer
 import logging
+import requests
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def open_browser():
-    webbrowser.open('http://127.0.0.1:5000')
+def check_server_ready():
+    try:
+        response = requests.get('http://127.0.0.1:5000/health')
+        if response.status_code == 200:
+            webbrowser.open('http://127.0.0.1:5000')
+            return
+    except requests.exceptions.ConnectionError:
+        pass
+    
+    # If we get here, the server isn't ready yet, try again in 1 second
+    Timer(1.0, check_server_ready).start()
 
 if __name__ == "__main__":
     # Add the current directory to the path
@@ -17,11 +27,16 @@ if __name__ == "__main__":
     
     logging.info("Starting Spotify Gesture Control Web App")
     
-    # Start the browser after a short delay
-    Timer(1.5, open_browser).start()
+    # Start checking if the server is ready
+    Timer(2.0, check_server_ready).start()
     
     # Import and run the Flask app
     from web.app import app, socketio, start_gesture_controller
+    
+    # Add a health check endpoint
+    @app.route('/health')
+    def health_check():
+        return "OK"
     
     # Start the gesture controller in a separate thread
     logging.info("Starting gesture controller thread")

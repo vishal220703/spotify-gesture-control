@@ -1,45 +1,38 @@
 import cv2
 import time
 
-def test_camera(index):
-    print(f"Testing camera index {index}...")
-    cap = cv2.VideoCapture(index)
+def test_camera(camera_index):
+    print(f"Testing camera with index {camera_index}...")
+    start_time = time.time()
+    cap = cv2.VideoCapture(camera_index)
+    init_time = time.time() - start_time
+    print(f"Camera initialization took {init_time:.2f} seconds")
     
     if not cap.isOpened():
-        print(f"Failed to open camera with index {index}")
+        print(f"Failed to open camera with index {camera_index}")
         return False
     
-    print(f"Successfully opened camera with index {index}")
+    # Try to read a frame
     ret, frame = cap.read()
-    
     if not ret:
-        print(f"Failed to read frame from camera with index {index}")
+        print(f"Failed to read frame from camera with index {camera_index}")
         cap.release()
         return False
     
-    print(f"Successfully read frame from camera with index {index}")
-    cv2.imshow(f"Camera {index} Test", frame)
-    key = cv2.waitKey(2000)  # Show for 2 seconds or until key press
-    
-    # Check if 'q' or ESC key was pressed
-    if key == ord('q') or key == 27:  # 27 is the ASCII code for ESC
-        print("Exit requested by user")
-        cap.release()
-        cv2.destroyAllWindows()
-        return "exit"
-        
-    cap.release()
+    # Display the frame for 2 seconds
+    cv2.imshow(f"Camera {camera_index} Test", frame)
+    cv2.waitKey(2000)
     cv2.destroyAllWindows()
+    
+    cap.release()
+    print(f"Camera with index {camera_index} is working properly")
     return True
 
 if __name__ == "__main__":
-    print("Press 'q' or ESC key to exit at any time")
-    # Test camera indices 0-3
+    # Test cameras with indices 0 to 3
     for i in range(4):
-        result = test_camera(i)
-        if result == "exit":
-            print("Exiting program")
-            break
-        elif result:
-            print(f"Camera index {i} is working!")
-        time.sleep(1)  # Wait between tests
+        if test_camera(i):
+            print(f"Camera index {i} is available and working")
+        else:
+            print(f"Camera index {i} is not available or not working")
+        print("---")
